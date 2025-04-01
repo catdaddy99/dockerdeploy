@@ -24,6 +24,14 @@ pipeline {
                 sh label: '', script: 'terraform apply --auto-approve'
             }
         }
+        stage('Sleep for Server Boot') {
+            steps {
+              script {
+                  print('60 secs to let the servers boot')
+                  sleep(60)    
+              }
+            }
+        }
         stage('Ansible Bootstrap'){
           steps{
               ansiblePlaybook become: true, credentialsId: '3b07289c-0df1-4dcc-9be5-334ab10bef8e', disableHostKeyChecking: true, installation: 'ansible', inventory: './ansible/inventory/hosts', playbook: './ansible/playbooks/bootstrap.yaml', vaultTmpPath: ''
