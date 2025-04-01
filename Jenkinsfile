@@ -21,7 +21,7 @@ pipeline {
         message "Do you want to proceed for production deployment?"
         }           
             steps {
-                sh label: '', script: 'terraform destroy --auto-approve'
+                sh label: '', script: 'terraform apply --auto-approve'
             }
         }
       }       

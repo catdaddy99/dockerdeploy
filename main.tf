@@ -25,7 +25,7 @@ resource "proxmox_lxc" "docker2" {
   // Terraform will crash without rootfs defined
   rootfs {
     storage = "cephdrive1"
-    size    = "4G"
+    size    = "20G"
   }
 
   network {
