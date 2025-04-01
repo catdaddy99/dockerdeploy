@@ -14,11 +14,6 @@
         name: dnsutils
         state: present
 
-    - name: Install mailutils
-      apt:
-        name: mailutils
-        state: present
-
     - name: Install net-tools
       apt:
         name: net-tools
