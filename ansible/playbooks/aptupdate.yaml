@@ -1,0 +1,23 @@
+- hosts: "postfix"
+  remote_user: tfuser
+  become: yes
+  become_method: sudo
+  become_user: root
+  tasks:
+
+    - name: Update all packages to their latest version
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+
+    - name: apt upgrade - dist upgrade
+      apt:
+        upgrade: 'yes'
+
+    - name: Remove useless packages from the cache
+      ansible.builtin.apt:
+        autoclean: yes
+
+    - name: Remove dependencies that are no longer required
+      apt:
+        autoremove: yes    

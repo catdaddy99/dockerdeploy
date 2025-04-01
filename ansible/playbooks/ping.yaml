@@ -1,0 +1,6 @@
+---
+
+- hosts: "postfix"
+  gather_facts: false
+  tasks:
+    - ping:

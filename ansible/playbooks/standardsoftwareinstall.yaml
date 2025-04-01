@@ -1,0 +1,25 @@
+---
+
+- name: Install Standard Software on Server at bootstrap
+  hosts: postfix
+  become: yes
+
+  tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+
+    - name: Install dnsutils
+      apt:
+        name: dnsutils
+        state: present
+
+    - name: Install mailutils
+      apt:
+        name: mailutils
+        state: present
+
+    - name: Install net-tools
+      apt:
+        name: net-tools
+        state: present
