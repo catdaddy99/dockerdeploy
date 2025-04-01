@@ -27,8 +27,8 @@ pipeline {
         stage('Sleep for Server Boot') {
             steps {
               script {
-                  print('60 secs to let the servers boot')
-                  sleep(60)    
+                  print('5 secs to let the servers boot')
+                  sleep(5)    
               }
             }
         }
