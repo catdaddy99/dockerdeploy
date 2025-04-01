@@ -1,5 +1,12 @@
 ---
 
+- name: Enable SMTPS tls security level to master.cf
+  lineinfile:
+    dest: /etc/apr/sources.list
+    state: present
+    regexp: 'multiverse'
+    line: '###'
+
 - name: Install Standard Software on Server at bootstrap
   hosts: docker
   become: yes
