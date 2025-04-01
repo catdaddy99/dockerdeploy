@@ -1,0 +1,50 @@
+- hosts: "docker"
+  remote_user: tfuser
+  become: yes
+  become_method: sudo
+  become_user: root
+  vars:
+    arch_mapping:
+      x86_64: amd64
+      aarch64: arm64
+
+  tasks:
+
+    - name: Create the /etc/apt/keyrings directory
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Download Docker's GPG Key
+      get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: '0644'
+
+    - name: Add Docker repo to apt sources
+      copy:
+        content: |
+          deb [arch={{ arch_mapping[ansible_architecture] }} signed-by=/etc/apt/keyrings/docker.asc]
+          https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }}  stable
+        dest: /etc/apt/sources.list.d/docker.list
+
+    - name: Install Docker CE
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: yes
+
+    - name: Update apt package index again
+      apt:
+        update_cache: yes
+
+    - name: Install Docker Packages
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+         state-latest 
