@@ -34,5 +34,10 @@ pipeline {
               ansiblePlaybook credentialsId: '3b07289c-0df1-4dcc-9be5-334ab10bef8e', disableHostKeyChecking: true, installation: 'ansible', inventory: './ansible/inventory/hosts', playbook: './ansible/playbooks/ping.yaml', vaultTmpPath: ''
           }
         }
+        stage('Ansible Apt Update'){
+          steps{
+              ansiblePlaybook become: true, credentialsId: '3b07289c-0df1-4dcc-9be5-334ab10bef8e', disableHostKeyChecking: true, installation: 'ansible', inventory: './ansible/inventory/hosts', playbook: './ansible/playbooks/aptupdate.yaml', vaultTmpPath: ''
+          }
+        }
       }       
     }
