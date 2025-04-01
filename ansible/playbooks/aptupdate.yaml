@@ -1,4 +1,4 @@
-- hosts: "postfix"
+- hosts: "docker"
   remote_user: tfuser
   become: yes
   become_method: sudo

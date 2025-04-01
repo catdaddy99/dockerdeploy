@@ -1,6 +1,6 @@
 ---
 
-- hosts: "postfix"
+- hosts: "docker"
   gather_facts: false
   tasks:
     - ping:

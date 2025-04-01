@@ -1,7 +1,7 @@
 
 ---
 - name: Bootstrap server for future ansible runs
-  hosts: all
+  hosts: "docker"
   remote_user: root
 
   vars: 

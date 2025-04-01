@@ -1,7 +1,7 @@
 ---
 
 - name: Install Standard Software on Server at bootstrap
-  hosts: postfix
+  hosts: docker
   become: yes
 
   tasks:
