@@ -10,6 +10,27 @@
 
   tasks:
 
+    - name: Comment out repos 1
+      lineinfile:
+        dest: /etc/apt/sources.list
+        state: present
+        regexp: 'lunar main'
+        line: '#deb http://archive.ubuntu.com/ubuntu lunar main restricted universe multiverse'  
+
+    - name: Comment out repos 2
+      lineinfile:
+        dest: /etc/apt/sources.list
+        state: present
+        regexp: 'lunar-updates'
+        line: '#deb http://archive.ubuntu.com/ubuntu lunar-updates main restricted universe multiverse'  
+
+    - name: Comment out repos 3
+      lineinfile:
+        dest: /etc/apt/sources.list
+        state: present
+        regexp: 'lunar-security'
+        line: '#deb http://archive.ubuntu.com/ubuntu lunar-security main restricted universe multiverse'                 
+
     - name: Create the /etc/apt/keyrings directory
       file:
         path: /etc/apt/keyrings
