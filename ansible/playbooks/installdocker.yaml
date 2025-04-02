@@ -1,4 +1,5 @@
 - hosts: "docker"
+  become: yes
   remote_user: tfuser
   become: yes
   become_method: sudo
