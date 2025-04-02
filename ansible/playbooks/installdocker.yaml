@@ -22,6 +22,13 @@
         dest: /etc/apt/keyrings/docker.asc
         mode: '0644'
 
+    - name: Add Docker Repo to apt sources & trust
+      ansible.builtin.lineinfile:
+        path: /etc/apt/sources.list.d/docker.list
+        line: 'deb [trusted=yes arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable'
+        create: true
+
+
 #    - name: Add Docker repo to apt sources
 #      copy:
 #        content: |
