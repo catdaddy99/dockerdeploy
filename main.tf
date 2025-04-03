@@ -5,7 +5,7 @@
 resource "proxmox_lxc" "docker2" {
   target_node  = "proxmox1"
   hostname     = "docker2"
-  ostemplate   = "local:vztmpl/ubuntu-23.04-standard_23.04-1_amd64.tar.zst"
+  ostemplate   = "local:vztmpl/local:vztmpl/ubuntu-24.04-standard_24.04-2_amd64.tar.zst"
   #clone = "ubuntuansiblereadytemp"
   password     = "B00TY"
   unprivileged = true
@@ -39,7 +39,7 @@ resource "proxmox_lxc" "docker2" {
 resource "proxmox_lxc" "docker3" {
   target_node  = "proxmox1"
   hostname     = "docker3"
-  ostemplate   = "local:vztmpl/ubuntu-23.04-standard_23.04-1_amd64.tar.zst"
+  ostemplate   = "local:vztmpl/local:vztmpl/ubuntu-24.04-standard_24.04-2_amd64.tar.zst"
   #clone = "ubuntuansiblereadytemp"
   password     = "B00TY"
   unprivileged = true
