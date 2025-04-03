@@ -21,7 +21,7 @@ pipeline {
         message "Do you want to proceed for production deployment?"
         }           
             steps {
-                sh label: '', script: 'terraform apply --auto-approve'
+                sh label: '', script: 'terraform destroy --auto-approve'
             }
         }
         stage('Sleep for Server Boot') {
@@ -56,6 +56,6 @@ pipeline {
 //          steps{
 //              ansiblePlaybook become: true, credentialsId: '3b07289c-0df1-4dcc-9be5-334ab10bef8e', disableHostKeyChecking: true, installation: 'ansible', inventory: './ansible/inventory/hosts', playbook: './ansible/playbooks/installdocker.yaml', vaultTmpPath: ''
 //          }          
-        } 
+//        } 
       }       
     }
