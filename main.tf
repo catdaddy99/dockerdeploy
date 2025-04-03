@@ -17,11 +17,6 @@ resource "proxmox_lxc" "docker2" {
   onboot = "true"
   start = "true"
 
-#  features {
-#    keyctl    = true
-#    nesting = true
-#  }
-
   ssh_public_keys = <<-EOT
     ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHBJA1Rrc+MXik7w7JhXASTIDVTu2J5ntoYYBE/47Zas tfuserkey
   EOT  
@@ -55,12 +50,6 @@ resource "proxmox_lxc" "docker3" {
   cores = "2"
   onboot = "true"
   start = "true"
-
-#  features {
-#    keyctl    = true
-#    nesting = true
-#  }
-
 
   ssh_public_keys = <<-EOT
     ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHBJA1Rrc+MXik7w7JhXASTIDVTu2J5ntoYYBE/47Zas tfuserkey
