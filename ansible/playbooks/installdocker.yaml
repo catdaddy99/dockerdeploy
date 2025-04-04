@@ -76,7 +76,7 @@
           - containerd.io
           - docker-buildx-plugin
           - docker-compose-plugin
-          - docker-compose-ce
+          - docker-compose
 
         state: latest 
 
