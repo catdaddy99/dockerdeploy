@@ -76,5 +76,14 @@
           - containerd.io
           - docker-buildx-plugin
           - docker-compose-plugin
+          - docker-compose-ce
 
         state: latest 
+
+    - name: Install Other Packages
+      apt:
+        name:
+          - python3-pip
+
+
+        state: latest         
