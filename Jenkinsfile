@@ -57,5 +57,10 @@ pipeline {
               ansiblePlaybook become: true, credentialsId: '3b07289c-0df1-4dcc-9be5-334ab10bef8e', disableHostKeyChecking: true, installation: 'ansible', inventory: './ansible/inventory/hosts', playbook: './ansible/playbooks/installdocker.yaml', vaultTmpPath: ''
           }          
         } 
+        stage('Install it-tools'){
+          steps{
+              ansiblePlaybook become: true, credentialsId: '3b07289c-0df1-4dcc-9be5-334ab10bef8e', disableHostKeyChecking: true, installation: 'ansible', inventory: './ansible/inventory/hosts', playbook: './ansible/playbooks/install_ittools.yaml', vaultTmpPath: ''
+          }          
+        }         
       }       
     }
