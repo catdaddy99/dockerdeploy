@@ -1,7 +1,10 @@
 ---
+- hosts: "it-tools"
 
-- name: Start it-tools
-  docker_container:
-    name: it-tools1
-    image: corentinth/it-tools
-    command: ["sleep", "infinity"]
+  tasks:
+
+    - name: Start it-tools
+      docker_container:
+        name: it-tools1
+        image: corentinth/it-tools
+        command: ["sleep", "infinity"]
