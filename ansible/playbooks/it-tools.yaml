@@ -1,8 +1,12 @@
 
 
 ---
-- hosts: all
+- hosts: all"docker"
   gather_facts: no
+  become: yes
+  vars:
+  ansible_python_interpreter: /usr/bin/python3
+  
 
   tasks:
     - name: Build the Docker image
