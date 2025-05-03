@@ -1,14 +1,23 @@
 
 
 ---
-- hosts: "docker"
-  become: true
+- hosts: all
+  gather_facts: no
+
   tasks:
-    - name: Ensure a container is running
+    - name: Build the Docker image
+      community.docker.docker_image:
+        name: "my-app:latest"
+        build:
+          path: ./my_app_directory
+        source: "build"
+        state: present
+
+    - name: Run the Docker container
       community.docker.docker_container:
-        name: my_nginx_container
-        image: nginx
+        name: "my-app-container"
+        image: "my-app:latest"
         state: started
-        restart_policy: always
+        restart_policy: "always" # Optional: Restart if container exits
         ports:
-          - "80:80"
+          - "8080:8080" # Example: Map host port 8080 to container port 8080
