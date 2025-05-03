@@ -1,10 +1,21 @@
 ---
-- hosts: "it-tools"
 
-  tasks:
 
-    - name: Start it-tools
-      docker_container:
-        name: it-tools1
-        image: corentinth/it-tools
-        command: ["sleep", "infinity"]
+
+- name: Create a data container
+  community.docker.docker_container:
+    name: mydata
+    image: busybox
+    volumes:
+      - /data
+
+
+#- hosts: "it-tools"
+#
+#  tasks:
+#
+#    - name: Start it-tools
+#      docker_container:
+#        name: it-tools1
+#        image: corentinth/it-tools
+#       command: ["sleep", "infinity"]
