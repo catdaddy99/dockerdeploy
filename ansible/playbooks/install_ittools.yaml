@@ -1,6 +1,9 @@
 ---
 
 
+- hosts: "it-tools"
+
+  tasks:
 
 - name: Create a data container
   community.docker.docker_container:
@@ -10,9 +13,6 @@
       - /data
 
 
-#- hosts: "it-tools"
-#
-#  tasks:
 #
 #    - name: Start it-tools
 #      docker_container:
