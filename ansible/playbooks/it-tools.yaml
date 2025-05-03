@@ -1,0 +1,16 @@
+---
+- name: it-tools
+  hosts: "docker"
+  become: yes
+  remote_user: tfuser
+  become_method: sudo
+  become_user: root
+
+  tasks:
+
+- name: Create a data container
+  community.docker.docker_container:
+    name: mydata
+    image: busybox
+    volumes:
+      - /data
