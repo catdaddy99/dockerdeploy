@@ -1,16 +1,14 @@
+
+
 ---
-- name: it-tools
-  hosts: "docker"
-  become: yes
-  remote_user: tfuser
-  become_method: sudo
-  become_user: root
-
+- hosts: "docker"
+  become: true
   tasks:
-
-- name: Create a data container
-  community.docker.docker_container:
-    name: mydata
-    image: busybox
-    volumes:
-      - /data
+    - name: Ensure a container is running
+      community.docker.docker_container:
+        name: my_nginx_container
+        image: nginx
+        state: started
+        restart_policy: always
+        ports:
+          - "80:80"
