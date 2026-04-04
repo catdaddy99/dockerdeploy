@@ -1,0 +1,87 @@
+---
+- name: Deploy Pi-hole DNS ad-blocker via Docker
+  hosts: "docker"
+  become: yes
+  remote_user: tfuser
+  become_method: sudo
+  become_user: root
+
+  vars:
+    pihole_base_dir: /opt/pihole
+    # Store this in Ansible Vault in production: ansible-vault encrypt_string 'yourpassword' --name pihole_password
+    pihole_password: "B00TY"
+    pihole_timezone: "America/Chicago"
+
+  tasks:
+
+    - name: Create Pi-hole config directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ pihole_base_dir }}/etc-pihole"
+        - "{{ pihole_base_dir }}/etc-dnsmasq.d"
+
+    - name: Deploy Pi-hole Docker container
+      community.docker.docker_container:
+        name: pihole
+        image: pihole/pihole:latest
+        state: started
+        restart_policy: unless-stopped
+        network_mode: host
+        env:
+          TZ: "{{ pihole_timezone }}"
+          WEBPASSWORD: "{{ pihole_password }}"
+          PIHOLE_DNS_1: "8.8.8.8"
+          PIHOLE_DNS_2: "8.8.4.4"
+          # Listen on all interfaces so Docker container queries are captured
+          DNSMASQ_LISTENING: "all"
+          # Enable full query logging so blocks appear in the dashboard
+          QUERY_LOGGING: "true"
+          DNSSEC: "false"
+          FTLCONF_LOCAL_IPV4: "{{ ansible_default_ipv4.address }}"
+        volumes:
+          - "{{ pihole_base_dir }}/etc-pihole:/etc/pihole"
+          - "{{ pihole_base_dir }}/etc-dnsmasq.d:/etc/dnsmasq.d"
+        capabilities:
+          - NET_ADMIN
+
+    - name: Wait for Pi-hole web interface to be ready
+      wait_for:
+        host: "{{ ansible_default_ipv4.address }}"
+        port: 80
+        delay: 5
+        timeout: 60
+
+    - name: Add popular ad/tracker blocklists to Pi-hole
+      community.docker.docker_container_exec:
+        container: pihole
+        command: >
+          sqlite3 /etc/pihole/gravity.db
+          "INSERT OR IGNORE INTO adlist (address, enabled, comment)
+           VALUES
+           ('https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts', 1, 'StevenBlack unified hosts - ads and malware'),
+           ('https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt', 1, 'KADhosts - Polish ad domains'),
+           ('https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts', 1, 'Spam hosts'),
+           ('https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts', 1, 'Risk hosts'),
+           ('https://v.firebog.net/hosts/AdguardDNS.txt', 1, 'AdGuard DNS filter'),
+           ('https://v.firebog.net/hosts/Easylist.txt', 1, 'EasyList'),
+           ('https://raw.githubusercontent.com/nicehash/nicehash-blacklist/master/nicehash-blacklist.txt', 1, 'NiceHash crypto-mining blacklist'),
+           ('https://v.firebog.net/hosts/Easyprivacy.txt', 1, 'EasyPrivacy - trackers'),
+           ('https://v.firebog.net/hosts/Prigent-Ads.txt', 1, 'Prigent Ads'),
+           ('https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts', 1, '2o7Net tracking hosts'),
+           ('https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt', 1, 'Windows Spy Blocker'),
+           ('https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt', 1, 'Frogeye first-party trackers');"
+
+    - name: Update Pi-hole gravity to load all blocklists
+      community.docker.docker_container_exec:
+        container: pihole
+        command: pihole updateGravity
+      register: gravity_result
+      async: 300
+      poll: 10
+
+    - name: Show gravity update output
+      debug:
+        var: gravity_result.stdout_lines
